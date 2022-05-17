@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Add Resource</h1>
+<table class='table'>
+    <form method="POST", class="post-form">{% csrf_token %}
+        {{form.as_table}}
+</table>
+<button type"submit" class="save btn btn_default">Save</button>
+</form>
+
+{% endblock %}
