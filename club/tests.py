@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from .models import Meeting, MeetingMinutes, Resources, Event
 from .forms import MeetingForm, ResourceForm
+from django.urls import reverse_lazy, reverse
 
 # Create your tests here.
 class MeetingTest(TestCase):
@@ -52,6 +53,15 @@ class NewMeetingForm(TestCase):
 
 class NewResourceForm(TestCase):
     def test_resourceform(self):
-        data = {'resourceName':'Python Club', 'resourceType':'online', 'url':'http://www.pythonclub.org','dateEntered':'1/1/2022', 'userID':'clare', 'description':'non-profit for coders'}
+        data = {'resourceName':'Python Club', 'resourceType':'online', 'url':'http://www.pythonclub.org','dateEntered':'2022-01-02', 'userID':'clare', 'description':'non-profit for coders'}
         form=ResourceForm (data)
         self.assertTrue(form.is_valid)
+
+class New_Resource_Authentication_Test(TestCase):
+    def setUp(self):
+        self.test_userID=User.objects.create_user(username='testuser1', password='password1')
+        self.resource=Resources.objects.create(resourceName='W3Schools',resourceType='online',userID=self.test_userID, dateEntered='2022-02-02', url='http://www.w3schools.org', description='online resource')
+
+    def test_redirect_if_not_logged_in(self):
+        response=self.client.get(reverse('newresource'))
+        self.assertRedirects(response, '/accounts/login/?next=/club/newResource/')
