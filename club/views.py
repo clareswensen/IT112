@@ -22,7 +22,7 @@ def meetingDetail(request, id):
 
 def resourceDetail(request, id):
     resource=get_object_or_404(Resources, pk=id)
-    return render(request, 'club/resourcedetail.html', {'resource': resource})
+    return render(request, 'club/resourcedetail.html', {'resources': resource})
 
 @login_required
 def newMeeting(request):
